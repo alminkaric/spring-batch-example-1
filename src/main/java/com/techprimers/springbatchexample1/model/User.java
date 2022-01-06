@@ -1,89 +1,93 @@
 package com.techprimers.springbatchexample1.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
 
     @Id
+    @GeneratedValue
     private Integer id;
     
-    @NotNull
-    private String name;
-
-    @NotNull
-    private String dept;
-
-    @NotNull
-    private Integer salary;
+    @NotNull private Integer employeeId;
     
-    @NotNull(message = "Time is mandatory")
-    private Date time;
+    @NotNull
+    private String firstName;
 
-    public User(Integer id, String name, String dept, Integer salary, Date time) {
-        this.id = id;
-        this.name = name;
-        this.dept = dept;
-        this.salary = salary;
-        this.time = time;
-    }
+    @NotNull
+    private String lastName;
 
-	public User() {
-    }
+    @NotNull
+    private String department;
 
-    public Integer getId() {
-        return id;
-    }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Salary> salaries = new ArrayList<>();
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Integer getEmployeeId() {
+		return employeeId;
+	}
 
-    public String getDept() {
-        return dept;
-    }
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
 
-    public void setDept(String dept) {
-        this.dept = dept;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public Integer getSalary() {
-        return salary;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setSalary(Integer salary) {
-        this.salary = salary;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("User{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", dept='").append(dept).append('\'');
-        sb.append(", salary=").append(salary);
-        sb.append('}');
-        return sb.toString();
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public Date getTime() {
-        return time;
-    }
+	public String getDepartment() {
+		return department;
+	}
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 
+	public List<Salary> getSalaries() {
+		return salaries;
+	}
+
+	public void setSalaries(List<Salary> salaries) {
+		this.salaries = salaries;
+	}
+	
+	public void addSalary(Salary salary) {
+		salary.setUser(this);
+		salaries.add(salary);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", department=" + department + ", salaries=" + salaries + "]";
+	}
+	
 }
