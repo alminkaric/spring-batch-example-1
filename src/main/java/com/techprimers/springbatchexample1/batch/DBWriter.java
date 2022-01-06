@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techprimers.springbatchexample1.dto.LineDTO;
+import com.techprimers.springbatchexample1.model.Department;
 import com.techprimers.springbatchexample1.model.Salary;
 import com.techprimers.springbatchexample1.model.User;
 import com.techprimers.springbatchexample1.repository.UserRepository;
@@ -41,7 +42,7 @@ public class DBWriter implements ItemWriter<LineDTO> {
     	for (LineDTO lineDTO : lineDTOs) {
     		final User user = userByEmplyeeId.get(lineDTO.getEmpId());
     		final Salary salary = new Salary();
-			salary.setAmount(lineDTO.getSalary());
+			salary.setAmount(Float.valueOf(lineDTO.getSalary()));
 			salary.setDate(LocalDate.parse(lineDTO.getSalaryDate(), LOCALDATE_FORMATTER));
 			user.addSalary(salary);
     	}
@@ -56,7 +57,7 @@ public class DBWriter implements ItemWriter<LineDTO> {
 		newUser.setEmployeeId(lineDTO.getEmpId());
 		newUser.setFirstName(lineDTO.getFirstName());
 		newUser.setLastName(lineDTO.getLastName());
-		newUser.setDepartment(lineDTO.getDeptId());
+		newUser.setDepartment(Department.valueFromId(lineDTO.getDeptId()));
 		
 		return newUser;
     }
