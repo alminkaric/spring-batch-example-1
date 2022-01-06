@@ -26,7 +26,7 @@ public class User {
     private String lastName;
 
     @NotNull
-    private String department;
+    private Department department;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Salary> salaries = new ArrayList<>();
@@ -63,11 +63,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getDepartment() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 
