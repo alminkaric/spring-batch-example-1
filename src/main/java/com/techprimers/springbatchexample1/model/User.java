@@ -1,17 +1,27 @@
 package com.techprimers.springbatchexample1.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
 
     @Id
     private Integer id;
+    
+    @NotNull
     private String name;
+
+    @NotNull
     private String dept;
+
+    @NotNull
     private Integer salary;
+    
+    @NotNull(message = "Time is mandatory")
     private Date time;
 
     public User(Integer id, String name, String dept, Integer salary, Date time) {
@@ -22,7 +32,7 @@ public class User {
         this.time = time;
     }
 
-    public User() {
+	public User() {
     }
 
     public Integer getId() {
@@ -75,4 +85,5 @@ public class User {
     public void setTime(Date time) {
         this.time = time;
     }
+
 }
