@@ -3,24 +3,24 @@ package com.techprimers.springbatchexample1.listener;
 import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.stereotype.Component;
 
-import com.techprimers.springbatchexample1.model.User;
+import com.techprimers.springbatchexample1.dto.LineDTO;
 
 @Component
-public class InvalidItemsListener implements ItemProcessListener<User, User> {
+public class InvalidItemsListener implements ItemProcessListener<LineDTO, LineDTO> {
 
 	@Override
-	public void beforeProcess(User user) {
+	public void beforeProcess(LineDTO lineDTO) {
 	}
 
 	@Override
-	public void afterProcess(User user, User result) {
+	public void afterProcess(LineDTO lineDTO, LineDTO result) {
 		if (result == null) {
-			System.out.println(user + " has been filtered because it is invalid");
+			System.out.println(lineDTO + " has been filtered because it is invalid");
 		}
 	}
 
 	@Override
-	public void onProcessError(User user, Exception e) {
-		System.out.println(user + " is invalid due to " + e.getMessage() );
+	public void onProcessError(LineDTO lineDTO, Exception e) {
+		System.out.println(lineDTO + " is invalid due to " + e.getMessage() );
 	}
 }

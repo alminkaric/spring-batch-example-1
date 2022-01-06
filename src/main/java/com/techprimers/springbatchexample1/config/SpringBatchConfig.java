@@ -23,8 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
+import com.techprimers.springbatchexample1.dto.LineDTO;
 import com.techprimers.springbatchexample1.listener.InvalidItemsListener;
-import com.techprimers.springbatchexample1.model.User;
 
 @Configuration
 @EnableBatchProcessing
@@ -33,14 +33,14 @@ public class SpringBatchConfig {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    StepBuilderFactory stepBuilderFactory,
-                   ItemReader<User> itemReader,
-                   ItemProcessor<User, User> itemProcessor,
+                   ItemReader<LineDTO> itemReader,
+                   ItemProcessor<LineDTO, LineDTO> itemProcessor,
                    InvalidItemsListener invalidItemsListener,
-                   ItemWriter<User> itemWriter
+                   ItemWriter<LineDTO> itemWriter
     ) {
 
         Step step = stepBuilderFactory.get("ETL-file-load")
-                .<User, User>chunk(100)
+                .<LineDTO, LineDTO>chunk(100)
                 .reader(itemReader)
                 .listener(invalidItemsListener)
                 .processor(itemProcessor)
@@ -56,9 +56,9 @@ public class SpringBatchConfig {
 
     @Bean
     @StepScope
-    public FlatFileItemReader<User> itemReader(@Value("#{jobParameters[dest]}") String dest) {
+    public FlatFileItemReader<LineDTO> itemReader(@Value("#{jobParameters[dest]}") String dest) {
 
-        FlatFileItemReader<User> flatFileItemReader = new FlatFileItemReader<>();
+        FlatFileItemReader<LineDTO> flatFileItemReader = new FlatFileItemReader<>();
         flatFileItemReader.setResource(new FileSystemResource(dest));
         flatFileItemReader.setName("CSV-Reader");
         flatFileItemReader.setLinesToSkip(1);
@@ -73,31 +73,31 @@ public class SpringBatchConfig {
 	}
 
 	@Bean
-	public Validator<User> springValidator() {
-		SpringValidator<User> springValidator = new SpringValidator<>();
+	public Validator<LineDTO> springValidator() {
+		SpringValidator<LineDTO> springValidator = new SpringValidator<>();
 		springValidator.setValidator(validator());
 		return springValidator;
 	}
 
 	@Bean
-	public ItemProcessor<User, User> itemProcessor() {
-		ValidatingItemProcessor<User> validatingItemProcessor = new ValidatingItemProcessor<>(springValidator());
+	public ItemProcessor<LineDTO, LineDTO> itemProcessor() {
+		ValidatingItemProcessor<LineDTO> validatingItemProcessor = new ValidatingItemProcessor<>(springValidator());
 		validatingItemProcessor.setFilter(true);
 		return validatingItemProcessor;
 	}
 
     @Bean
-    public LineMapper<User> lineMapper() {
+    public LineMapper<LineDTO> lineMapper() {
 
-        DefaultLineMapper<User> defaultLineMapper = new DefaultLineMapper<>();
+        DefaultLineMapper<LineDTO> defaultLineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
 
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("id", "name", "dept", "salary");
+        lineTokenizer.setNames("emp_id", "first_name", "last_name", "dept_id", "salary_date", "salary");
 
-        BeanWrapperFieldSetMapper<User> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(User.class);
+        BeanWrapperFieldSetMapper<LineDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(LineDTO.class);
 
         defaultLineMapper.setLineTokenizer(lineTokenizer);
         defaultLineMapper.setFieldSetMapper(fieldSetMapper);
