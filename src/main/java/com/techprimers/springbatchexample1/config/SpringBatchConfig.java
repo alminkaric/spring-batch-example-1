@@ -1,5 +1,8 @@
 package com.techprimers.springbatchexample1.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -9,12 +12,12 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.validator.SpringValidator;
 import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.Validator;
@@ -23,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
+import com.techprimers.springbatchexample1.batch.DBWriter;
 import com.techprimers.springbatchexample1.dto.LineDTO;
 import com.techprimers.springbatchexample1.listener.InvalidItemsListener;
 
@@ -36,8 +40,12 @@ public class SpringBatchConfig {
                    ItemReader<LineDTO> itemReader,
                    ItemProcessor<LineDTO, LineDTO> itemProcessor,
                    InvalidItemsListener invalidItemsListener,
-                   ItemWriter<LineDTO> itemWriter
+                   DBWriter itemWriter
     ) {
+    	
+    	final List<LineDTO> invalidLines = new ArrayList<>();
+    	invalidItemsListener.setInvalidLines(invalidLines);
+    	itemWriter.setInvalidLines(invalidLines);
 
         Step step = stepBuilderFactory.get("ETL-file-load")
                 .<LineDTO, LineDTO>chunk(100)
@@ -88,21 +96,30 @@ public class SpringBatchConfig {
 
     @Bean
     public LineMapper<LineDTO> lineMapper() {
+        final DefaultLineMapper<LineDTO> defaultLineMapper = new DefaultLineMapper<>();
 
-        DefaultLineMapper<LineDTO> defaultLineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-
-        lineTokenizer.setDelimiter(",");
-        lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("emp_id", "first_name", "last_name", "dept_id", "salary_date", "salary");
-
-        BeanWrapperFieldSetMapper<LineDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(LineDTO.class);
-
+        final DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         defaultLineMapper.setLineTokenizer(lineTokenizer);
+
+        final LineDTOFieldSetMapper fieldSetMapper = new LineDTOFieldSetMapper();
         defaultLineMapper.setFieldSetMapper(fieldSetMapper);
 
         return defaultLineMapper;
+    }
+    
+    private static class LineDTOFieldSetMapper implements FieldSetMapper<LineDTO> {
+        public LineDTO mapFieldSet(FieldSet fieldSet) {
+            final LineDTO lineDTO = new LineDTO();
+            lineDTO.setEmpId(fieldSet.readInt(0));
+            lineDTO.setFirstName(fieldSet.readRawString(1));
+            lineDTO.setLastName(fieldSet.readRawString(2));
+            lineDTO.setDeptId(fieldSet.readRawString(3));
+            lineDTO.setSalaryDate(fieldSet.readRawString(4));
+            lineDTO.setSalary(fieldSet.readRawString(5));
+            lineDTO.setRawLine(String.join(",", fieldSet.getValues()));
+
+            return lineDTO;
+        }
     }
 
 }

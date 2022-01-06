@@ -8,12 +8,15 @@ import com.techprimers.springbatchexample1.validation.SalaryValidation;
 
 public class LineDTO {
 
-	@NotNull  Integer empId;
-	@NotNull  String firstName;
-	@NotNull  String lastName;
+	@NotNull private Integer empId;
+	@NotNull  private String firstName;
+	@NotNull  private String lastName;
 	@DepartmantValidation @NotNull  String deptId;
 	@DateValidation @NotNull private String salaryDate;
 	@SalaryValidation @NotNull private String salary;
+	
+	private String rawLine;
+	
 
 	public LineDTO(
 			final Integer empId, 
@@ -68,10 +71,19 @@ public class LineDTO {
 	public void setSalary(String salary) {
 		this.salary = salary;
 	}
+	
+	public String getRawLine() {
+		return rawLine;
+	}
+
+	public void setRawLine(String rawLine) {
+		this.rawLine = rawLine;
+	}
 
 	@Override
 	public String toString() {
 		return "LineDTO [empId=" + empId + ", firstName=" + firstName + ", lastName=" + lastName + ", deptId=" + deptId
-				+ ", salaryDate=" + salaryDate + ", salary=" + salary + "]";
+				+ ", salaryDate=" + salaryDate + ", salary=" + salary + ", rawLine=" + rawLine + "]";
 	}
+	
 }
