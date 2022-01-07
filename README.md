@@ -26,6 +26,11 @@ emp_id,fist_name,last_name,dep_id,salary_date,salary
 11,Bill,Bones,1003,2021-11-30,3800.00
 ```
 
+## TODO:
+- write some junit tests (for validators and dbwriter)
+- add javadoc
+- improve the code (refactor, add final and static keywords, add more comments)
+
 ## How to run the application
 - clone the project into desired folder
 - run `mvn clean install` in the terminal (java 8 and maven are required for that)
