@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO: Add javadoc
+ * @author akaric
+ *
+ */
 @RestController
 @RequestMapping("/load")
 public class LoadController {
@@ -24,6 +29,15 @@ public class LoadController {
     @Autowired
     Job job;
 
+    /**
+     * TODO: Add javadoc
+     * @param dest
+     * @return
+     * @throws JobParametersInvalidException
+     * @throws JobExecutionAlreadyRunningException
+     * @throws JobRestartException
+     * @throws JobInstanceAlreadyCompleteException
+     */
     @GetMapping
     public BatchStatus load(@PathVariable final String dest) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 

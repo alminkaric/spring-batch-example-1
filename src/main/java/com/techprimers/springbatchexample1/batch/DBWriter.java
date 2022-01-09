@@ -20,6 +20,11 @@ import com.techprimers.springbatchexample1.model.User;
 import com.techprimers.springbatchexample1.repository.UserRepository;
 import com.techprimers.springbatchexample1.validation.DateFormatValidator;
 
+/**
+ * TODO: Add javadoc
+ * @author akaric
+ *
+ */
 @Component
 @Scope("prototype")
 public class DBWriter implements ItemWriter<LineDTO> {
@@ -35,6 +40,9 @@ public class DBWriter implements ItemWriter<LineDTO> {
         this.userRepository = userRepository;
     }
 
+    /**
+     * TODO: Add javadoc
+     */
     @Override
     public void write(List<? extends LineDTO> lineDTOs) throws Exception{
     	// organize user by employee id
@@ -61,6 +69,10 @@ public class DBWriter implements ItemWriter<LineDTO> {
         logAverageSalaryPerUser(users);
     }
 
+    /**
+     * TODO: Add javadoc
+     * @param invalidLines
+     */
 	public void setInvalidLines(List<LineDTO> invalidLines) {
 		this.invalidLines = invalidLines;
 	}

@@ -34,6 +34,16 @@ import com.techprimers.springbatchexample1.listener.InvalidItemsListener;
 @EnableBatchProcessing
 public class SpringBatchConfig {
 
+	/**
+	 * TODO: add javadoc
+	 * @param jobBuilderFactory
+	 * @param stepBuilderFactory
+	 * @param itemReader
+	 * @param itemProcessor
+	 * @param invalidItemsListener
+	 * @param itemWriter
+	 * @return
+	 */
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    StepBuilderFactory stepBuilderFactory,
@@ -62,6 +72,11 @@ public class SpringBatchConfig {
                 .build();
     }
 
+    /**
+     * TODO: Add javadoc
+     * @param dest
+     * @return
+     */
     @Bean
     @StepScope
     public FlatFileItemReader<LineDTO> itemReader(@Value("#{jobParameters[dest]}") String dest) {
@@ -74,12 +89,21 @@ public class SpringBatchConfig {
         return flatFileItemReader;
     }
     
+    /**
+     * TODO: Add javadoc
+     * @return
+     */
     @Bean
 	public org.springframework.validation.Validator validator() {
 		// see https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation-spring
 		return new org.springframework.validation.beanvalidation.LocalValidatorFactoryBean();
 	}
 
+    
+    /**
+     * TODO: Add javadoc
+     * @return
+     */
 	@Bean
 	public Validator<LineDTO> springValidator() {
 		SpringValidator<LineDTO> springValidator = new SpringValidator<>();
@@ -87,6 +111,10 @@ public class SpringBatchConfig {
 		return springValidator;
 	}
 
+	/**
+	 * TODO: Add javadco
+	 * @return
+	 */
 	@Bean
 	public ItemProcessor<LineDTO, LineDTO> itemProcessor() {
 		ValidatingItemProcessor<LineDTO> validatingItemProcessor = new ValidatingItemProcessor<>(springValidator());
@@ -94,6 +122,10 @@ public class SpringBatchConfig {
 		return validatingItemProcessor;
 	}
 
+	/**
+	 * TODO: Add javadoc
+	 * @return
+	 */
     @Bean
     public LineMapper<LineDTO> lineMapper() {
         final DefaultLineMapper<LineDTO> defaultLineMapper = new DefaultLineMapper<>();

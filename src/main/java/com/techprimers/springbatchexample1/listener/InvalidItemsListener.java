@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.techprimers.springbatchexample1.dto.LineDTO;
 
+/**
+ * TODO: Add javadoc
+ * @author akaric
+ *
+ */
 @Component
 @Scope("prototype")
 public class InvalidItemsListener implements ItemProcessListener<LineDTO, LineDTO> {

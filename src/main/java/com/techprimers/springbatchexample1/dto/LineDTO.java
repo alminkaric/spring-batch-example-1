@@ -6,6 +6,12 @@ import com.techprimers.springbatchexample1.validation.DateValidation;
 import com.techprimers.springbatchexample1.validation.DepartmantValidation;
 import com.techprimers.springbatchexample1.validation.SalaryValidation;
 
+/**
+ * TODO: Add javadoc
+ * 
+ * @author akaric
+ *
+ */
 public class LineDTO {
 
 	@NotNull private Integer empId;

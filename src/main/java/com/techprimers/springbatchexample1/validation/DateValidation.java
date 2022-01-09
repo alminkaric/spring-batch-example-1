@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+/**
+ * TODO: Add javadoc
+ * @author akaric
+ *
+ */
 @Documented
 @Constraint(validatedBy = DateFormatValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
