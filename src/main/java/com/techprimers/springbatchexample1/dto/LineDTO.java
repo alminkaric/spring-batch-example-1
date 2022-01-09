@@ -1,5 +1,6 @@
 package com.techprimers.springbatchexample1.dto;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.techprimers.springbatchexample1.validation.DateValidation;
@@ -15,11 +16,11 @@ import com.techprimers.springbatchexample1.validation.SalaryValidation;
 public class LineDTO {
 
 	@NotNull private Integer empId;
-	@NotNull  private String firstName;
-	@NotNull  private String lastName;
-	@DepartmantValidation @NotNull  String deptId;
-	@DateValidation @NotNull private String salaryDate;
-	@SalaryValidation @NotNull private String salary;
+	@NotEmpty  private String firstName;
+	@NotEmpty  private String lastName;
+	@DepartmantValidation @NotEmpty  String deptId;
+	@DateValidation @NotEmpty private String salaryDate;
+	@SalaryValidation @NotEmpty private String salary;
 	
 	private String rawLine;
 	
