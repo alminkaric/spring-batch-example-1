@@ -7,7 +7,11 @@ public class SalaryFormatValidator implements ConstraintValidator<SalaryValidati
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (value == null || !value.contains(".")) {
+		if (value == null || value.equals("")) {
+			return true;
+		}
+
+		if (!value.contains(".")) {
 			return false;
 		}
 

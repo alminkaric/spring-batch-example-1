@@ -10,9 +10,12 @@ import javax.validation.ConstraintValidatorContext;
 public class DateFormatValidator implements ConstraintValidator<DateValidation, String> {
 	public static final DateTimeFormatter LOCALDATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
+		if (value == null || value.equals("")) {
+			return true;
+		}
+
 		try {
 			LocalDate.parse(value, LOCALDATE_FORMATTER);
 			return true;
